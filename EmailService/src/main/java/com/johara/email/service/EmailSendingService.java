@@ -18,7 +18,6 @@ public class EmailSendingService {
 
     public void sendOrderConfirmationEmail(OrderMessage orderMessage) {
         LOGGER.info("Sending order confirmation email for orderId: {}", orderMessage.getOrderId());
-
         Email from = new Email("adamrbyrne@gmail.com");
         String subject = "Sending with SendGrid is Fun";
         Email to = new Email("adamrbyrne@gmail.com");
@@ -32,7 +31,12 @@ public class EmailSendingService {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = sg.api(request);
-            LOGGER.info(response.toString());
+            if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+                LOGGER.info("Email sent successfully");
+            } else {
+                LOGGER.error("Failed to send email. Status code: " +
+                        response.getStatusCode());
+            }
         } catch (IOException ex) {
             LOGGER.error("Error sending email");
         }

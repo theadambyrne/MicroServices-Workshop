@@ -15,6 +15,7 @@ public class Order {
     private String orderId;
 
     private Long customerId;
+    private String customerEmail;
 
     private Long productId;
 
@@ -27,15 +28,25 @@ public class Order {
     public Order() {
     }
 
-    public Order(String orderId, Long customerId, Long productId, int quantity, LocalDateTime orderDate) {
+    public Order(String orderId, Long customerId, Long productId, int quantity, LocalDateTime orderDate,
+            String customerEmail) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.productId = productId;
         this.quantity = quantity;
         this.orderDate = orderDate;
+        this.customerEmail = customerEmail;
     }
 
     // Getters and Setters
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String _email) {
+        this.customerEmail = _email;
+    }
 
     public Long getId() {
         return id;
