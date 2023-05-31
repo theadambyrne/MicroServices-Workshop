@@ -38,6 +38,7 @@ public class OrderService {
         orderMessage.setProductId(order.getProductId());
         orderMessage.setQuantity(order.getQuantity());
         orderMessage.setOrderDate(order.getOrderDate());
+        orderMessage.setCustomerEmail(order.getCustomerEmail());
 
         return orderMessage;
     }

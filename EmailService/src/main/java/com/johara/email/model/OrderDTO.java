@@ -5,6 +5,15 @@ public class OrderDTO {
     private String name;
     private String description;
     private double price;
+    private String customerEmail;
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String _email) {
+        this.customerEmail = _email;
+    }
 
     public Long getId() {
         return id;

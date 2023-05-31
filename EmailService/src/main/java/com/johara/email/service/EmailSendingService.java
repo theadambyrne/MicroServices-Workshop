@@ -18,9 +18,11 @@ public class EmailSendingService {
 
     public void sendOrderConfirmationEmail(OrderMessage orderMessage) {
         LOGGER.info("Sending order confirmation email for orderId: {}", orderMessage.getOrderId());
+        LOGGER.info("To customer @ {}", orderMessage.getCustomerEmail());
+
         Email from = new Email("adamrbyrne@gmail.com");
         String subject = "Sending with SendGrid is Fun";
-        Email to = new Email("adamrbyrne@gmail.com");
+        Email to = new Email(orderMessage.getCustomerEmail());
         Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
         Mail mail = new Mail(from, subject, to, content);
 
