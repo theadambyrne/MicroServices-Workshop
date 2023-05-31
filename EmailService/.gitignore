@@ -37,3 +37,4 @@ build/
 ### Mac OS ###
 .DS_Storesendgrid.env
 sendgrid.env
+sendgrid.env
