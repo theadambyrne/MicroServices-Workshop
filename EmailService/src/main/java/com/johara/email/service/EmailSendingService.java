@@ -21,9 +21,14 @@ public class EmailSendingService {
         LOGGER.info("To customer @ {}", orderMessage.getCustomerEmail());
 
         Email from = new Email("adamrbyrne@gmail.com");
-        String subject = "Sending with SendGrid is Fun";
+        String subject = "Order Confirmation #" + orderMessage.getOrderId();
         Email to = new Email(orderMessage.getCustomerEmail());
-        Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
+
+        String htmlContent = "<html><body><h1>Order confirmation.</h1><p>Thanks for your order!</p><ul><li>Time: {{time}}</li><li>Order ID: {{id}}</li></ul></body></html>";
+        htmlContent = htmlContent.replace("{{id}}", orderMessage.getOrderId());
+        htmlContent = htmlContent.replace("{{time}}", String.valueOf(orderMessage.getOrderDate()));
+
+        Content content = new Content("text/html", htmlContent);
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
