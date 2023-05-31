@@ -32,8 +32,9 @@ public class EmailSendingService {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = sg.api(request);
+            LOGGER.info(response.toString());
         } catch (IOException ex) {
-            LOGGER.error("ERROR");
+            LOGGER.error("Error sending email");
         }
     }
 }
