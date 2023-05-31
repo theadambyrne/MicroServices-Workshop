@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_id BIGINT,
     product_id BIGINT,
     quantity INT,
-    order_date TIMESTAMP
+    order_date TIMESTAMP,
+    CUSTOMER_EMAIL VARCHAR(255)
 );
 
 -- Insert sample data

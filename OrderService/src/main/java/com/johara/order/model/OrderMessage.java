@@ -18,6 +18,7 @@ public class OrderMessage {
     private int quantity;
 
     private LocalDateTime orderDate;
+    private String customerEmail;
 
     public OrderMessage() {
     }
@@ -30,6 +31,14 @@ public class OrderMessage {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String _email) {
+        this.customerEmail = _email;
     }
 
     public Long getId() {
