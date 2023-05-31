@@ -9,6 +9,15 @@ public class OrderMessage {
     private Long productId;
     private int quantity;
     private LocalDateTime orderDate;
+    private String customerEmail;
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String _email) {
+        this.customerEmail = _email;
+    }
 
     public Long getId() {
         return id;
