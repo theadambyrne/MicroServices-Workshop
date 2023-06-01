@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<style>
+			/* Add your custom CSS styles here */
+			body {
+				font-family: Arial, sans-serif;
+				background-color: #f4f4f4;
+				padding: 20px;
+			}
+
+			.container {
+				max-width: 600px;
+				margin: 0 auto;
+				background-color: #ffffff;
+				border-radius: 4px;
+				padding: 20px;
+			}
+
+			h1 {
+				color: #333333;
+			}
+
+			p {
+				color: #666666;
+			}
+
+			.order-details {
+				margin-top: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Order Confirmation</h1>
+			<p>Dear {{name}},</p>
+
+			<p>Thank you for your order ({{oId}}). Here are the details:</p>
+
+			<div class="order-details">
+				<p><strong>Product:</strong> {{pName}}</p>
+				<p><strong>Description:</strong> {{pDescription}}</p>
+				<p><strong>Quantity:</strong> {{pQuantity}}</p>
+				<hr />
+				<p><strong>Price:</strong> {{pPrice}}</p>
+			</div>
+
+			<p>If you have any questions, please don't hesitate to contact us.</p>
+
+			<p>Thank you,</p>
+			<p>Your Company Name</p>
+		</div>
+	</body>
+</html>

@@ -2,6 +2,9 @@ package com.johara.email.kafka;
 
 import com.johara.email.model.OrderMessage;
 import com.johara.email.service.EmailSendingService;
+
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,7 @@ public class OrderPlacedEventListener {
     }
 
     @KafkaListener(topics = "orders", groupId = "${spring.kafka.consumer.group-id}")
-    public void handleOrderPlacedEvent(OrderMessage orderMessage) {
+    public void handleOrderPlacedEvent(OrderMessage orderMessage) throws IOException {
         LOGGER.info("Received OrderPlacedEvent for order: {}", orderMessage.getOrderId());
 
         // Call the email service to send the email

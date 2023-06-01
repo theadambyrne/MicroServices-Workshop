@@ -6,18 +6,21 @@ import com.johara.email.model.OrderMessage;
 import com.johara.email.model.ProductDTO;
 import com.johara.email.model.UserDTO;
 import com.johara.email.model.UserMessage;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
-
-import java.io.IOException;
 
 @Service
 public class EmailSendingService {
@@ -31,7 +34,7 @@ public class EmailSendingService {
         this.productServiceClient = productServiceClient;
     }
 
-    public void sendOrderConfirmationEmail(OrderMessage orderMessage) {
+    public void sendOrderConfirmationEmail(OrderMessage orderMessage) throws IOException {
         LOGGER.info("Order Confirmation #{}", orderMessage.getOrderId());
 
         UserDTO user = userServiceClient.getUserById(orderMessage.getCustomerId());
@@ -41,22 +44,19 @@ public class EmailSendingService {
         String subject = "Order Confirmation #" + orderMessage.getOrderId();
         Email to = new Email(orderMessage.getCustomerEmail());
 
-        String htmlContent = "<html><body><h1>Order confirmation.</h1><p>Thanks for your order, {{name}}!</p><ul><li>Time: {{time}}</li><li>Order ID: {{id}}</li><li>{{product}}</li></ul></body></html>";
-        htmlContent = htmlContent.replace("{{id}}", orderMessage.getOrderId());
-        htmlContent = htmlContent.replace("{{time}}",
-                String.valueOf(orderMessage.getOrderDate()));
-        htmlContent = htmlContent.replace("{{name}}",
-                user.getName());
-        htmlContent = htmlContent.replace("{{product}}",
-                product.getName());
+        ClassPathResource resource = new ClassPathResource("email-template.html");
+        byte[] templateBytes = StreamUtils.copyToByteArray(resource.getInputStream());
+        String template = new String(templateBytes, StandardCharsets.UTF_8);
+        template = template
+                .replace("{{oId}}", orderMessage.getOrderId())
+                .replace("{{name}}", user.getName())
+                .replace("{{pName}}", product.getName())
+                .replace("{{pDescription}}", product.getDescription())
+                .replace("{{pQuantity}}", String.valueOf(orderMessage.getQuantity()))
+                .replace("{{pPrice}}", String.valueOf(product.getPrice()));
 
-        if (orderMessage.getOrderStatus().equals("cancelled")) {
-            htmlContent = htmlContent.replace("confirmation", "cancellation");
-            subject = "Order Cancellation #" + orderMessage.getOrderId();
-            LOGGER.info("CANCELLATION");
-        }
-
-        Content content = new Content("text/html", htmlContent);
+        Content content = new Content("text/html", template);
+        LOGGER.info(template, content);
         Mail mail = new Mail(from, subject, to, content);
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
         Request request = new Request();
