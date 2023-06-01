@@ -42,4 +42,7 @@ public class OrderService {
 
         return orderMessage;
     }
+    public void deleteOrder(Order order) {
+        orderRepository.delete(order);
+    }    
 }

@@ -20,7 +20,7 @@ public class Order {
     private Long productId;
 
     private int quantity;
-
+    private String orderStatus;
     private LocalDateTime orderDate;
 
     // Constructors
@@ -36,6 +36,7 @@ public class Order {
         this.quantity = quantity;
         this.orderDate = orderDate;
         this.customerEmail = customerEmail;
+        this.orderStatus = "active";
     }
 
     // Getters and Setters
@@ -46,6 +47,14 @@ public class Order {
 
     public void setCustomerEmail(String _email) {
         this.customerEmail = _email;
+    }
+
+    public String getStatus() {
+        return orderStatus;
+    }
+
+    public void setStatus(String status) {
+        this.orderStatus = status;
     }
 
     public Long getId() {
