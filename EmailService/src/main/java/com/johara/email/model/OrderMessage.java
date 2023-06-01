@@ -10,6 +10,18 @@ public class OrderMessage {
     private int quantity;
     private LocalDateTime orderDate;
     private String customerEmail;
+    private String orderStatus;
+
+
+
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 
     public String getCustomerEmail() {
         return customerEmail;

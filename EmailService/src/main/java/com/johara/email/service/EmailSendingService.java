@@ -43,6 +43,11 @@ public class EmailSendingService {
         htmlContent = htmlContent.replace("{{name}}",
                 user.getName());
 
+        if(orderMessage.getOrderStatus() == "cancelled"){
+            htmlContent = htmlContent.replace("confirmation", "cancellation");
+            subject = "Order Cancellation #" + orderMessage.getOrderId();
+        }
+        
         Content content = new Content("text/html", htmlContent);
         Mail mail = new Mail(from, subject, to, content);
 
@@ -63,4 +68,5 @@ public class EmailSendingService {
             LOGGER.error("Error sending email");
         }
     }
+
 }
