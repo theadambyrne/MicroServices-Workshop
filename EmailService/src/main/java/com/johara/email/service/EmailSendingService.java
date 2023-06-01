@@ -1,7 +1,9 @@
 package com.johara.email.service;
 
+import com.johara.email.client.ProductServiceClient;
 import com.johara.email.client.UserServiceClient;
 import com.johara.email.model.OrderMessage;
+import com.johara.email.model.ProductDTO;
 import com.johara.email.model.UserDTO;
 import com.johara.email.model.UserMessage;
 
@@ -21,31 +23,35 @@ import java.io.IOException;
 public class EmailSendingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailSendingService.class);
     private UserServiceClient userServiceClient;
+    private ProductServiceClient productServiceClient;
 
     @Autowired
-    EmailSendingService(UserServiceClient userServiceClient) {
+    EmailSendingService(UserServiceClient userServiceClient, ProductServiceClient productServiceClient) {
         this.userServiceClient = userServiceClient;
+        this.productServiceClient = productServiceClient;
     }
 
     public void sendOrderConfirmationEmail(OrderMessage orderMessage) {
         LOGGER.info("Order Confirmation #{}", orderMessage.getOrderId());
 
         UserDTO user = userServiceClient.getUserById(orderMessage.getCustomerId());
+        ProductDTO product = productServiceClient.getProductById((Long) orderMessage.getProductId());
 
         Email from = new Email("adamrbyrne@gmail.com");
         String subject = "Order Confirmation #" + orderMessage.getOrderId();
         Email to = new Email(orderMessage.getCustomerEmail());
 
-        String htmlContent = "<html><body><h1>Order confirmation.</h1><p>Thanks for your order, {{name}}!</p><ul><li>Time: {{time}}</li><li>Order ID: {{id}}</li></ul></body></html>";
+        String htmlContent = "<html><body><h1>Order confirmation.</h1><p>Thanks for your order, {{name}}!</p><ul><li>Time: {{time}}</li><li>Order ID: {{id}}</li><li>{{product}}</li></ul></body></html>";
         htmlContent = htmlContent.replace("{{id}}", orderMessage.getOrderId());
         htmlContent = htmlContent.replace("{{time}}",
                 String.valueOf(orderMessage.getOrderDate()));
         htmlContent = htmlContent.replace("{{name}}",
                 user.getName());
+        htmlContent = htmlContent.replace("{{product}}",
+                product.getName());
 
         Content content = new Content("text/html", htmlContent);
         Mail mail = new Mail(from, subject, to, content);
-
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
         Request request = new Request();
         try {
