@@ -63,7 +63,7 @@ public class OrderController {
         return orderRepository.findAll();
     }
 
-    @PutMapping("/cancel/{id}")
+    @PostMapping("/cancel/{id}")
     public ResponseEntity<Order> cancelOrders(@PathVariable Long id) {
         Optional<Order> maybeExistingOrder = orderRepository.findById(id);
         if (maybeExistingOrder.isPresent()) {
@@ -71,6 +71,18 @@ public class OrderController {
             existingOrder.setStatus("cancelled");
             Order cancelledOrder = orderRepository.save(existingOrder);
             return ResponseEntity.ok(cancelledOrder);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PostMapping("/activate/{id}")
+    public ResponseEntity<Order> activateOrders(@PathVariable Long id) {
+        Optional<Order> maybeExistingOrder = orderRepository.findById(id);
+        if (maybeExistingOrder.isPresent()) {
+            Order existingOrder= maybeExistingOrder.get();
+            existingOrder.setStatus("active");
+            Order activatedOrder = orderRepository.save(existingOrder);
+            return ResponseEntity.ok(activatedOrder);
         } else {
             return ResponseEntity.notFound().build();
         }
