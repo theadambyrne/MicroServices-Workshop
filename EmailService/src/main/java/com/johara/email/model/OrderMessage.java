@@ -12,9 +12,6 @@ public class OrderMessage {
     private String customerEmail;
     private String orderStatus;
 
-
-
-
     public String getOrderStatus() {
         return orderStatus;
     }

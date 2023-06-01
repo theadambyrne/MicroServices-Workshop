@@ -6,15 +6,6 @@ public class OrderDTO {
     private String description;
     private double price;
     private String customerEmail;
-    private String orderStatus;
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
 
     public String getCustomerEmail() {
         return customerEmail;
