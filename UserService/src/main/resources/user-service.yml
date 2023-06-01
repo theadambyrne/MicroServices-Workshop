@@ -11,6 +11,8 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
+  kafka:
+    bootstrap-servers: localhost:29092
 # Discovery Server Access
 eureka:
   client:
